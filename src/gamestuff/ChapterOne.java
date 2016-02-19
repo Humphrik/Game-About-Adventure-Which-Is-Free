@@ -70,6 +70,8 @@ public class ChapterOne extends Thread {
 					commands.enter();
 				} else if (newInput[0].equals("close") || newInput[0].equals("shut")) {
 					commands.close();
+				} else if (newInput[0].equals("give") || newInput[0].equals("feed")){
+					commands.give();
 				} else {
 					game.printMessage("You don't know how to do that.");
 				}
