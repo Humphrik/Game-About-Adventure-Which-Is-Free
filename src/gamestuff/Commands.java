@@ -4,6 +4,7 @@ public class Commands {
 	boolean hasDog = false;
 	boolean hasBat = false;
 	boolean dogDistracted = false;
+	boolean doorOpen = false;
 	private int wallStare = 0;
 	String[] input;
 
@@ -17,9 +18,18 @@ public class Commands {
 				}
 				if ((input[0].equals("look") && input[1].equals("around")) || (input[1].equals("room"))) {
 					game.printMessage("You look around.");
-					game.printMessage("There is a single door in the room guarded by a large dog.");
-					game.printMessage("There is a baseball bat next to one of the walls.");
-					game.printMessage("However, the baseball bat is also guarded by a small dog.");
+					game.printMessage("There is a single door in the room.");
+					if (dogDistracted) {
+						game.printMessage("The large dog guarding it is now distracted.");
+					} else {
+						game.printMessage("It is being guarded by a large dog.");
+					}
+					if (!hasBat && !dogDistracted) {
+						game.printMessage("There is a baseball bat next to one of the walls.");
+					}
+					if (!hasDog) {
+						game.printMessage("However, the baseball bat is guarded by a small dog.");
+					}
 				} else if (input[1].equals("small") || input[1].equals("smalldog") || input[1].equals("little")
 						|| input[1].equals("littledog") || input[1].equals("tinkles")) {
 					if (hasDog) {
@@ -36,15 +46,19 @@ public class Commands {
 				} else if (input[1].equals("dog")) {
 					game.printMessage("Which dog?");
 				} else if (input[1].equals("bat") || input[1].equals("baseball") || input[1].equals("baseballbat")) {
+					if(!dogDistracted){
 					game.printMessage("It is a wooden bat.");
 					if (hasDog) {
 						game.printMessage("It looks very professional.");
 					} else {
 						game.printMessage("A small dog is sitting on top of it.");
 					}
+					}else {
+						game.printMessage("The bat is currently being mauled by a dog.");
+					}
 				} else if (input[1].equals("door")) {
 					if (dogDistracted) {
-						game.printMessage("The door is no longer being gaurded.");
+						game.printMessage("The door is no longer being guarded.");
 					} else {
 						game.printMessage("The only exit to the room.");
 						game.printMessage("There is a large dog standing in the way.");
@@ -102,7 +116,9 @@ public class Commands {
 				} else if (input[1].equals("dog")) {
 					game.printMessage("Which dog?");
 				} else if (input[1].equals("bat") || input[1].equals("baseball") || input[1].equals("baseballbat")) {
-					if (hasBat) {
+					if (dogDistracted){
+						game.printMessage("It belongs to the large dog now.");
+					} else if (hasBat) {
 						game.printMessage("You already have the bat");
 					} else if (hasDog && !hasBat) {
 						game.printMessage("You take the now unguarded bat and add it to your inventory.");
@@ -148,7 +164,9 @@ public class Commands {
 				} else if (input[1].equals("dog")) {
 					game.printMessage("Which dog?");
 				} else if (input[1].equals("bat") || input[1].equals("baseball") || input[1].equals("baseballbat")) {
-					if (hasBat) {
+					if (dogDistracted){
+						game.printMessage("There is a big dog in the way");
+				} else if (hasBat) {
 						game.printMessage("You are already holding the bat!");
 					} else if (hasDog && !hasBat) {
 						game.printMessage("You are able to approach that bat because you have the dog now.");
@@ -180,7 +198,7 @@ public class Commands {
 		boolean invalidWeapon = false;
 		try {
 
-			if (input.length == 4 || (input.length == 5 && input[2].equals("dog") || input[2].equals("bat"))
+			if (input.length == 4 || (input.length == 5 && input[2].equals("dog") || input[4].equals("bat"))
 					|| (input.length == 6 && input[5].equals("bat"))) {
 				if (input[3].equals("with") || input[3].equals("using")) {
 					input[3] = input[4];
@@ -268,19 +286,128 @@ public class Commands {
 	}
 
 	public void drop() {
-		if ((input.length == 5  || input.length == 4 && input[0].equals("let") && input[1].equals("go") && input[2].equals("of"))
-				|| (input.length == 4  || input.length == 3 && input[0].equals("put") && input[1].equals("down"))
-				|| (input.length == 3 || input.length == 2 && input[0].equals("drop"))) {
-			if (input[input.length - 2].equals("small") || input[input.length - 2].equals("little")
-					|| input[input.length - 1].equals("smalldog") || input[input.length - 1].equals("littledog")
-					|| input[input.length - 1].equals("tinkles")) {
-				game.printMessage("You would rather let it rest.");
-			} else if (input[input.length - 1].equals("bat") || input[input.length - 1].equals("baseballbat")) {
-				game.printMessage("You place the bat on the ground and give it a pat.");
+		try {
+			if ((input.length == 5
+					|| input.length == 4 && input[0].equals("let") && input[1].equals("go") && input[2].equals("of"))
+					|| (input.length == 4 || input.length == 3 && input[0].equals("put") && input[1].equals("down"))
+					|| (input.length == 3 || input.length == 2 && input[0].equals("drop"))) {
+				if (input[input.length - 2].equals("small") || input[input.length - 2].equals("little")
+						|| input[input.length - 1].equals("smalldog") || input[input.length - 1].equals("littledog")
+						|| input[input.length - 1].equals("tinkles")) {
+					game.printMessage("You would rather let it rest.");
+				} else if (input[input.length - 1].equals("bat") || input[input.length - 1].equals("baseballbat")) {
+					game.printMessage("You place the bat on the ground and give it a pat.");
+					String removeInv = game.HUD.getText();
+					game.HUD.setText(removeInv.replaceAll("\n-Baseball Bat", ""));
+					hasBat = false;
+				} else {
+					game.printMessage("You are not holding that.");
+				}
+			} else {
+				game.printMessage("You cannot drop that.");
+			}
+		} catch (ArrayIndexOutOfBoundsException er) {
+			game.printMessage("You cannot do that.");
+		}
+	}
+
+	public void toss(){
+		try{
+			if(input[input.length-1].equals("smalldog") ||	input[input.length-1].equals("littledog")||
+					input[input.length-1].equals("tinkles") || input[input.length-2].equals("small") || input[input.length-2].equals("little")){
+				if(hasDog){
+				game.printMessage("You throw the small dog.");
+				game.printMessage("She flies back to you like a boomerang.");
+			} else {
+				game.printMessage("You don't have a dog.");
+				}
+			}else if(input[input.length-1].equals("bat") || input[input.length-1].equals("baseballbat")){
+				if(hasBat){
+				game.printMessage("You throw the bat.");
+				game.printMessage("Suddenly, the large dog jump up and chases it!");
+				game.printMessage("The door is not being guarded any more!");
 				String removeInv = game.HUD.getText();
 				game.HUD.setText(removeInv.replaceAll("\n-Baseball Bat", ""));
 				hasBat = false;
+				dogDistracted = true;
+				} else {
+					game.printMessage("You don't have a bat.");
+				}
+			}else if(input[input.length-1].equals("self") || input[input.length-1].equals("myself") || input[input.length-1].equals("me")){
+				game.printMessage("You throw yourself on to the floor");
+				game.printMessage("The large dog takes this opportunity to eat you.");
+				game.changeHealth(-100);
+			} else if(input[input.length-1].equals("dog") && !input[input.length-2].equals("large")){
+				game.printMessage("Which dog?");
+			}  else {
+				game.printMessage("You cannot throw that.");
 			}
+		}catch(ArrayIndexOutOfBoundsException er){
+			game.printMessage("What are you throwing?");
 		}
 	}
+public void open(){
+	try{
+		if(input.length == 2 && input[1].equals("door")){
+			if(doorOpen){
+				game.printMessage("The door is already open!");
+			}
+			else if(dogDistracted){
+				game.printMessage("The door is now opened");
+				doorOpen = true;
+			}else{
+				game.printMessage("There is a dog in the way.");
+			}
+		}else {
+			game.printMessage("You can't open that.");
+		}
+	}catch(ArrayIndexOutOfBoundsException er){
+		game.printMessage("What are you opening?");
+	}
+	
+}
+public void enter(){
+	try{
+	if(input.length == 2 && input[0].equals("enter") || (input.length ==3 &&input[0].equals("go"))){
+		if(input[input.length-1].equals("door")){
+			if(doorOpen && dogDistracted){
+				game.printMessage("You go through the door!\n");
+				game.printMessage("-------------------");
+				game.printMessage("YOU HAVE ESCAPED!!!");
+				game.printMessage("-------------------");
+				game.userInput.setEnabled(false);
+				while(true){}
+			} else if(!dogDistracted) {
+				game.printMessage("There is a dog in the way.");
+			} else{
+				game.printMessage("You run into the closed door like an idiot.");
+				game.changeHealth(-10);
+			}
+		} else {
+			game.printMessage("You cannot go through that.");
+		}
+	} else {
+		game.printMessage("You cannot go through that.");
+	}
+	}catch(ArrayIndexOutOfBoundsException er){
+		game.printMessage("What are you entering?");
+	}
+}
+
+public void close(){
+	try{
+	if(input.length == 2 && input[1].equals("door")){
+		if (doorOpen){
+			game.printMessage("You close the door... for some reason.");
+			doorOpen = false;
+		} else {
+			game.printMessage("The door is already closed.");
+		}
+	} else {
+		game.printMessage("You cannot close that.");
+	}
+	}catch(ArrayIndexOutOfBoundsException er){
+		game.printMessage("What are you opening?");
+	}
+}
 }

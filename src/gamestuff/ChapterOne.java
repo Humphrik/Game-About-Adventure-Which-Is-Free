@@ -17,7 +17,8 @@ public class ChapterOne extends Thread {
 			Thread.sleep((long) 100000000000000.0);
 		} catch (InterruptedException e) {
 			String input = game.inputText.toLowerCase();
-			input = input.replaceAll("the", "");
+			input = input.replaceAll("the ", "");
+			input = input.replaceAll("my ", "");
 			String[] newInput = input.split(" ");
 			commands.input = newInput;
 			try {
@@ -40,15 +41,40 @@ public class ChapterOne extends Thread {
 						commands.input = correctedInput;
 						commands.attack();
 					} else if (newInput.length == 2) {
-						String[] correctedInput = { "attack", newInput[1], "with", "fists"};
+						String[] correctedInput = { "attack", newInput[1], "with", "fists" };
 						commands.input = correctedInput;
 						commands.attack();
 					}
-				} else if (newInput[0].equals("drop") || newInput[0].equals("put")|| newInput[0].equals("let")){
+				} else if (newInput[0].equals("drop") || newInput[0].equals("put") || newInput[0].equals("let")) {
 					commands.drop();
+				} else if (newInput[0].equals("throw") || newInput[0].equals("toss") || newInput.equals("chuck")) {
+					if (newInput.length > 2) {
+						int j = 2;
+						String[] correctedInput;
+						if (newInput[2].equals("at")) {
+							j = 1;
+							correctedInput = new String[2];
+						} else {
+							correctedInput = new String[3];
+						}
+						for (int i = 0; i <= j; i++) {
+							correctedInput[i] = newInput[i];
+						}
+						commands.input = correctedInput;
+					}
+					commands.toss();
+				} else if (newInput[0].equals("open")) {
+					commands.open();
+				} else if (newInput[0].equals("enter") || (newInput[0].equals("go")
+						&& (newInput[1].equals("through") || newInput[1].equals("into")))) {
+					commands.enter();
+				} else if (newInput[0].equals("close") || newInput[0].equals("shut")) {
+					commands.close();
+				} else {
+					game.printMessage("You don't know how to do that.");
 				}
 			} catch (ArrayIndexOutOfBoundsException er) {
-				game.printMessage("You cannot do that");
+				game.printMessage("You must be more specific.");
 			}
 		}
 	}

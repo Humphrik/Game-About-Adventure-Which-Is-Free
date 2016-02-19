@@ -21,7 +21,7 @@ public class game {
 	static GridBagConstraints c = new GridBagConstraints();
 	static JTextArea console = new JTextArea();
 	static int health = 100;
-	static JTextArea HUD = new JTextArea("Health: " + health +  "\n Inventory: \n none");
+	static JTextArea HUD = new JTextArea("Health: " + health + "\n Inventory: \n none");
 	static JTextArea userInput = new JTextArea();
 	static Font tnr = new Font("Times New Roman", Font.PLAIN, 24);
 	static String inputText = "";
@@ -99,18 +99,24 @@ public class game {
 		consoleMessage = "";
 		console.setText("");
 	}
-	public static void changeHealth (int amount){
-		HUD.setText(HUD.getText().replaceAll(Integer.toString(health), Integer.toString(health+amount)));
-		health+= amount;
-		if(health < 0){
-			health = 0;
+
+	public static void changeHealth(int amount) {
+		int temp;
+		if (health + amount > 0) {
+			temp = health + amount;
+		} else {
+			temp = 0;
 		}
-		if(health == 0){
+		HUD.setText(HUD.getText().replaceAll(Integer.toString(health), Integer.toString(temp)));
+		health += amount;
+		if (temp == 0) {
 			printMessage("You have died.\n");
 			printMessage("-----------------------");
 			printMessage("GAME OVER.");
 			printMessage("-----------------------");
 			userInput.setEnabled(false);
+			while (true) {
+			}
 		}
 	}
 
