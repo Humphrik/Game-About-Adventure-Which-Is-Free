@@ -102,6 +102,16 @@ public class game {
 	public static void changeHealth (int amount){
 		HUD.setText(HUD.getText().replaceAll(Integer.toString(health), Integer.toString(health+amount)));
 		health+= amount;
+		if(health < 0){
+			health = 0;
+		}
+		if(health == 0){
+			printMessage("You have died.\n");
+			printMessage("-----------------------");
+			printMessage("GAME OVER.");
+			printMessage("-----------------------");
+			userInput.setEnabled(false);
+		}
 	}
 
 }
