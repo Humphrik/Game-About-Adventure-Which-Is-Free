@@ -16,4 +16,5 @@ commands to add\
 \'93swallow tongue\'94\
 \'93flashback to vietnam\'94\
 \'93raise ego\'94\
-\'93play freeag\'94 (user would die)}
+\'93play freeag\'94 (user would die)\
+\'93eat hand\'94}
