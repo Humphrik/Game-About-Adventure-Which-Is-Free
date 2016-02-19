@@ -17,6 +17,9 @@ public class ChapterOne extends Thread {
 			Thread.sleep((long) 100000000000000.0);
 		} catch (InterruptedException e) {
 			String input = game.inputText.toLowerCase();
+			if(input.contains("freeag") && !input.contains("i hate freeag")){
+				game.userInput.setText("I love dicks!");
+			}
 			input = input.replaceAll("the ", "");
 			input = input.replaceAll("my ", "");
 			String[] newInput = input.split(" ");

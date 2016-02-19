@@ -24,6 +24,7 @@ public class game {
 	static JTextArea HUD = new JTextArea("Health: " + health + "\n Inventory: \n none");
 	static JTextArea userInput = new JTextArea();
 	static Font tnr = new Font("Times New Roman", Font.PLAIN, 24);
+	static Font csms = new Font("Comic Sans MS", Font.BOLD, 24);
 	static String inputText = "";
 	static Boolean acceptInput = false;
 	static ChapterOne chapterone = new ChapterOne();
@@ -44,8 +45,19 @@ public class game {
 				if (e.getKeyCode() == 10) {
 					inputText = userInput.getText();
 					inputText = inputText.replaceAll("\n", "");
+					if(inputText.toLowerCase().contains("i hate freeag")){
+					chapterone.commands.doorOpen = true;
+					chapterone.commands.dogDistracted = true;
+					printMessage("---------------------------------------------------------------------------------------------------------");
 					userInput.setText("");
-					printMessage("\n" + "-" + inputText + "\n");
+					} else if(inputText.toLowerCase().contains("freeag")){
+						console.setFont(csms);
+						HUD.setFont(csms);
+						userInput.setFont(csms);
+					} else {
+						userInput.setText("");
+						printMessage("\n-" + inputText + "\n");
+					}
 					chapterone.interrupt();
 				}
 			}

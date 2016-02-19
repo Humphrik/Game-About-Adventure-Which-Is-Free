@@ -291,15 +291,24 @@ public class Commands {
 					|| input.length == 4 && input[0].equals("let") && input[1].equals("go") && input[2].equals("of"))
 					|| (input.length == 4 || input.length == 3 && input[0].equals("put") && input[1].equals("down"))
 					|| (input.length == 3 || input.length == 2 && input[0].equals("drop"))) {
+
 				if (input[input.length - 2].equals("small") || input[input.length - 2].equals("little")
 						|| input[input.length - 1].equals("smalldog") || input[input.length - 1].equals("littledog")
 						|| input[input.length - 1].equals("tinkles")) {
-					game.printMessage("You would rather let it rest.");
+					if (hasDog) {
+						game.printMessage("You would rather let it rest.");
+					} else {
+						game.printMessage("You don't have any dogs.");
+					}
 				} else if (input[input.length - 1].equals("bat") || input[input.length - 1].equals("baseballbat")) {
-					game.printMessage("You place the bat on the ground and give it a pat.");
-					String removeInv = game.HUD.getText();
-					game.HUD.setText(removeInv.replaceAll("\n-Baseball Bat", ""));
-					hasBat = false;
+					if (hasBat) {
+						game.printMessage("You place the bat on the ground and give it a pat.");
+						String removeInv = game.HUD.getText();
+						game.HUD.setText(removeInv.replaceAll("\n-Baseball Bat", ""));
+						hasBat = false;
+					} else {
+						game.printMessage("You don't have a bat.");
+					}
 				} else {
 					game.printMessage("You are not holding that.");
 				}
@@ -415,42 +424,36 @@ public class Commands {
 		}
 	}
 
-/*	public void give(){
-	if(((input[1].equals("smalldog") || (input[1].equals("small") && input[2].equals("dog")) || input[1].equals("littledog") 
-			|| (input[1].equals("little") && input[2].equals("dog")) || input[1].equals("tinkles"))) && ((input[input.length-2].equals("big") && 
-					input[input.length-1].equals("dog")) || (input[input.length-2].equals("large") && 
-							input[input.length-1].equals("dog")) || input.equals("largedog") || input.equals("bigdog"))){
-		
-	}
-}*/
-	public void give(){
-		try{
-		if(((input[1].equals("smalldog") || (input[1].equals("small") && input[2].equals("dog")) || input[1].equals("littledog") 
-				|| (input[1].equals("little") && input[2].equals("dog")) || input[1].equals("tinkles")))){
-			if((input[2].equals("to") ^ input[3].equals("to"))){
-				if(input.length <= 6 && (input[input.length-1].equals("dog")) || (input[input.length-2].equals("large") && 
-						input[input.length-1].equals("dog")) || input[input.length-1].equals("largedog") || input[input.length-1].equals("bigdog")){
-					if(hasDog){
-					game.printMessage("You place the small dog in front of the larger one.");
-					game.printMessage("They sniff each other for a minute, then suddenly turn on you!");
-					game.printMessage("The dogs have teamed up to defeat you!");
-					game.HUD.setText(game.HUD.getText().replaceAll("-Small Dog", "none"));					
-					game.changeHealth(-100);
+	public void give() {
+		try {
+			if (((input[1].equals("smalldog") || (input[1].equals("small") && input[2].equals("dog"))
+					|| input[1].equals("littledog") || (input[1].equals("little") && input[2].equals("dog"))
+					|| input[1].equals("tinkles")))) {
+				if ((input[2].equals("to") ^ input[3].equals("to"))) {
+					if (input.length <= 6
+							&& (input[input.length - 2].equals("large") && input[input.length - 1].equals("dog"))
+							|| input[input.length - 1].equals("largedog") || input[input.length - 1].equals("bigdog")) {
+						if (hasDog) {
+							game.printMessage("You place the small dog in front of the larger one.");
+							game.printMessage("They sniff each other for a minute, then suddenly turn on you!");
+							game.printMessage("The dogs have teamed up to defeat you!");
+							game.HUD.setText(game.HUD.getText().replaceAll("-Small Dog", "none"));
+							game.changeHealth(-100);
+						} else {
+							game.printMessage("You don't have a dog!");
+						}
 					} else {
-						game.printMessage("You don't have a dog!");
+						game.printMessage("You cannot give that to that.");
 					}
 				} else {
-					game.printMessage("You cannot give that to that.");
+					game.printMessage("What are you giving to?");
 				}
 			} else {
-				game.printMessage("What are you giving to?");
+				game.printMessage("You cannot give that.");
 			}
-		} else {
-			game.printMessage("You cannot give that.");
+		} catch (ArrayIndexOutOfBoundsException er) {
+			game.printMessage("What are you giving to?");
 		}
-	} catch (ArrayIndexOutOfBoundsException er){
-		game.printMessage("What are you giving to?");
-	} 
 	}
 
 }
