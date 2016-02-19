@@ -17,7 +17,7 @@ public class ChapterOne extends Thread {
 			Thread.sleep((long) 100000000000000.0);
 		} catch (InterruptedException e) {
 			String input = game.inputText.toLowerCase();
-			if(input.contains("freeag") && !input.contains("i hate freeag")){
+			if(input.contains("freeag") && !input.equals("i hate freeag")){
 				game.userInput.setText("I love dicks!");
 			}
 			input = input.replaceAll("the ", "");
@@ -25,7 +25,9 @@ public class ChapterOne extends Thread {
 			String[] newInput = input.split(" ");
 			commands.input = newInput;
 			try {
-				if ((newInput[0].equals("look") && (newInput[1].equals("at") || newInput[1].equals("around")))
+				if ((newInput[0].equals("help") && newInput.length == 1)){
+					commands.help();
+				} else if ((newInput[0].equals("look") && (newInput[1].equals("at") || newInput[1].equals("around")))
 						|| newInput[0].equals("observe") || newInput[0].equals("examine")) {
 					commands.look();
 				} else if (newInput[0].equals("take") || newInput[0].equals("pick") || newInput[0].equals("grab")
@@ -68,8 +70,8 @@ public class ChapterOne extends Thread {
 					commands.toss();
 				} else if (newInput[0].equals("open")) {
 					commands.open();
-				} else if (newInput[0].equals("enter") || (newInput[0].equals("go")
-						&& (newInput[1].equals("through") || newInput[1].equals("into")))) {
+				} else if (newInput[0].equals("enter") || (((newInput[0].equals("go") || newInput[0].equals("walk")
+						&& (newInput[1].equals("through"))) || newInput[1].equals("into")))) {
 					commands.enter();
 				} else if (newInput[0].equals("close") || newInput[0].equals("shut")) {
 					commands.close();

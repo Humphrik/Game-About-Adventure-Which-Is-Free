@@ -45,7 +45,7 @@ public class game {
 				if (e.getKeyCode() == 10) {
 					inputText = userInput.getText();
 					inputText = inputText.replaceAll("\n", "");
-					if(inputText.toLowerCase().contains("i hate freeag")){
+					if(inputText.toLowerCase().equals("i hate freeag")){
 					chapterone.commands.doorOpen = true;
 					chapterone.commands.dogDistracted = true;
 					printMessage("---------------------------------------------------------------------------------------------------------");

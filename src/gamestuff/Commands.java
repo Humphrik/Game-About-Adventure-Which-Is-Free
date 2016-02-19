@@ -160,7 +160,7 @@ public class Commands {
 					}
 				} else if (input[1].equals("large") || input[1].equals("largedog") || input[1].equals("big")
 						|| input[1].equals("bigdog")) {
-					game.printMessage("You would rather leave it be for now.");
+					game.printMessage("You'd rather not.");
 				} else if (input[1].equals("dog")) {
 					game.printMessage("Which dog?");
 				} else if (input[1].equals("bat") || input[1].equals("baseball") || input[1].equals("baseballbat")) {
@@ -251,7 +251,7 @@ public class Commands {
 						game.printMessage(
 								"You close your eyes and start swinging wildly in the large\ndog's direction");
 						game.printMessage("When you open your eyes, you realize you are nowhere near\n the dog.");
-						game.printMessage("The large dog look excited by your swinging.");
+						game.printMessage("The large dog looks excited by your swinging.");
 					} else if (input[1].equals("self") || input[1].equals("myself") || input[1].equals("me")) {
 						game.printMessage("You give yourself a nice bump on the head with the bat.");
 						game.changeHealth(-25);
@@ -380,7 +380,7 @@ public class Commands {
 
 	public void enter() {
 		try {
-			if (input.length == 2 && input[0].equals("enter") || (input.length == 3 && input[0].equals("go"))) {
+			if (input.length == 2 && input[0].equals("enter") || (input.length == 3 && input[0].equals("go") || input[0].equals("walk"))) {
 				if (input[input.length - 1].equals("door")) {
 					if (doorOpen && dogDistracted) {
 						game.printMessage("You go through the door!\n");
@@ -455,5 +455,13 @@ public class Commands {
 			game.printMessage("What are you giving to?");
 		}
 	}
-
+	public void help(){
+		game.printMessage("\"Welcome to the game about adventure which is free!");
+		game.printMessage("This game is still a work in progress, so please report any bugs.");
+		game.printMessage("Here are some suggestions to get started: ");
+		game.printMessage("-Look around. Taking in your surroundings is important.");
+		game.printMessage("-Examine or observe objects for useful hints.");
+		game.printMessage("-Keep in mind that you are a total whimp in this game.");
+		game.printMessage("-Don't give up and have fun!\"");
+	}
 }
