@@ -28,6 +28,9 @@ public class game {
 	static String inputText = "";
 	static Boolean acceptInput = false;
 	static ChapterOne chapterone = new ChapterOne();
+	static String[] previousCommands = new String[10];
+	static int currentCommandNumber = 0;
+	static int chosenCommandNumber = 0;
 
 	public static void main(String[] args) {
 		startup();
@@ -44,13 +47,25 @@ public class game {
 			public void keyPressed(KeyEvent e) {
 				if (e.getKeyCode() == 10) {
 					inputText = userInput.getText();
+					try {
+						previousCommands[currentCommandNumber] = inputText.replaceAll("\n", "");
+						currentCommandNumber++;
+						chosenCommandNumber = currentCommandNumber;
+
+					} catch (ArrayIndexOutOfBoundsException er) {
+						for (int i = 0; i < currentCommandNumber - 1; i++) {
+							previousCommands[i] = previousCommands[i + 1];
+						}
+						previousCommands[currentCommandNumber - 1] = inputText.replaceAll("\n", "");
+					}
 					inputText = inputText.replaceAll("\n", "");
-					if(inputText.toLowerCase().equals("i hate freeag")){
-					chapterone.commands.doorOpen = true;
-					chapterone.commands.dogDistracted = true;
-					printMessage("---------------------------------------------------------------------------------------------------------");
-					userInput.setText("");
-					} else if(inputText.toLowerCase().contains("freeag")){
+					if (inputText.toLowerCase().equals("i hate freeag")) {
+						chapterone.commands.doorOpen = true;
+						chapterone.commands.dogDistracted = true;
+						printMessage(
+								"---------------------------------------------------------------------------------------------------------");
+						userInput.setText("");
+					} else if (inputText.toLowerCase().contains("freeag")) {
 						console.setFont(csms);
 						HUD.setFont(csms);
 						userInput.setFont(csms);
@@ -59,6 +74,24 @@ public class game {
 						printMessage("\n-" + inputText + "\n");
 					}
 					chapterone.interrupt();
+				} else if (e.getKeyCode() == 38) {
+					chosenCommandNumber--;
+					if (chosenCommandNumber < 0) {
+						chosenCommandNumber = 0;
+					}
+					userInput.setText(previousCommands[chosenCommandNumber]);
+				} else if (e.getKeyCode() == 40) {
+					chosenCommandNumber++;
+					if (chosenCommandNumber > currentCommandNumber - 1) {
+						chosenCommandNumber = currentCommandNumber;
+					}
+					try{
+					userInput.setText(previousCommands[chosenCommandNumber]);
+					} catch (ArrayIndexOutOfBoundsException er){
+						userInput.setText("");
+					}
+				} else {
+					chosenCommandNumber = currentCommandNumber;
 				}
 			}
 
