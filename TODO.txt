@@ -2,13 +2,13 @@ TODO list
 
 commands to add
 
-“die”
-“kill dog”
-“foot” should be a weapon
-“transcend human form”
-“swallow foot”
-“swallow tongue”
-“flashback to vietnam”
-“raise ego”
-“play freeag” (user would die)
-“eat hand”
+"die"
+"kill dog"
+"foot"
+"transcend human form"
+"swallow foot"
+"swallow tongue"
+"flashback to vietnam"
+"raise ego"
+"play freeag" (user would die)
+"eat hand"
